@@ -1,4 +1,4 @@
-# ![Screenshot](./Screenshot.png)
+
 # 💸 FinBotX – Your Intelligent Financial Assistant
 
 [![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -30,11 +30,5 @@ FinBotX is a modern and intelligent **personal finance assistant** web app built
 
 ---
 
-## 📦 Installation
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/GPSNawamina/FinBotx.git
-cd FinBotx
 
 
