@@ -1,4 +1,8 @@
 // src/components/DynamicIsland.jsx
+// A smart, interactive UI component that mimics Apple's Dynamic Island behavior.
+// It expands on hover/click to show voice control, finance, and alerts buttons.
+// It can display real-time notifications and respond to voice commands for navigation.
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaMicrophone, FaChartLine, FaBell } from "react-icons/fa";
@@ -6,10 +10,11 @@ import { useVoiceRecognition } from "../hooks/useVoiceRecognition";
 
 const DynamicIsland = () => {
   const navigate = useNavigate();
-  const [expanded, setExpanded] = useState(false);
-  const [notification, setNotification] = useState(null);
-  const { transcript, isListening, startListening } = useVoiceRecognition();
+  const [expanded, setExpanded] = useState(false); // Controls whether the island is expanded
+  const [notification, setNotification] = useState(null); // Stores current notification
+  const { transcript, isListening, startListening } = useVoiceRecognition(); // Voice recognition hook
 
+  // Simulate receiving a notification every 10 seconds
   useEffect(() => {
     const notifications = [
       { type: "finance", title: "AAPL ↗ 3.2%", duration: 5000 },
@@ -20,9 +25,10 @@ const DynamicIsland = () => {
       setNotification(notifications[Math.floor(Math.random() * 2)]);
     }, 10000);
     
-    return () => clearTimeout(timer);
+    return () => clearTimeout(timer); // Clean up the timer on unmount
   }, [notification]);
 
+  // React to voice transcript by navigating to corresponding route
   useEffect(() => {
     if (transcript) {
       const command = transcript.toLowerCase();
@@ -47,8 +53,9 @@ const DynamicIsland = () => {
       }}
     >
       {expanded ? (
+        // Expanded view: shows voice, finance, and alerts buttons
         <div className="flex items-center justify-between w-full px-5 py-1">
-          {/* Voice Control Section */}
+          {/* Voice control button */}
           <div className="relative">
             <button
               className={`p-2 transition-all duration-200 ${
@@ -58,7 +65,7 @@ const DynamicIsland = () => {
               }`}
               onClick={(e) => {
                 e.stopPropagation();
-                startListening();
+                startListening(); // Start voice recognition
               }}
             >
               <div className="flex flex-col items-center">
@@ -67,7 +74,7 @@ const DynamicIsland = () => {
               </div>
             </button>
 
-            {/* Speech Bubble */}
+            {/* Speech transcript bubble */}
             {transcript && (
               <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
                 bg-white text-black px-3 py-2 rounded-lg text-sm max-w-xs shadow-lg
@@ -79,6 +86,7 @@ const DynamicIsland = () => {
                     {transcript}
                   </span>
                 </div>
+                {/* Pointer triangle */}
                 <div className="absolute left-1/2 -bottom-2 w-0 h-0 
                   border-l-8 border-r-8 border-t-8 border-transparent 
                   border-t-white -translate-x-1/2"></div>
@@ -86,7 +94,7 @@ const DynamicIsland = () => {
             )}
           </div>
 
-          {/* Finance Button */}
+          {/* Finance navigation button */}
           <button
             className="text-gray-300 hover:text-white transition-colors p-2"
             onClick={(e) => {
@@ -100,7 +108,7 @@ const DynamicIsland = () => {
             </div>
           </button>
 
-          {/* Alerts Button */}
+          {/* Alerts button (currently static) */}
           <button
             className="text-gray-300 hover:text-white transition-colors p-2"
             onClick={(e) => e.stopPropagation()}
@@ -112,6 +120,7 @@ const DynamicIsland = () => {
           </button>
         </div>
       ) : notification ? (
+        // Collapsed view showing a recent notification
         <div className="flex items-center justify-between w-full px-3 animate-fade-in">
           <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
             notification.type === "finance" ? "bg-green-400" : "bg-blue-400"
@@ -126,6 +135,7 @@ const DynamicIsland = () => {
           </span>
         </div>
       ) : (
+        // Idle collapsed state with loading dots
         <div className="flex items-center justify-center space-x-2 animate-fade-in">
           <div className="w-2.5 h-2.5 bg-gray-400 rounded-full animate-bounce"></div>
           <div className="w-2.5 h-2.5 bg-gray-400 rounded-full animate-bounce delay-100"></div>
