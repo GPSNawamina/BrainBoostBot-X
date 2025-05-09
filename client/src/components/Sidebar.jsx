@@ -2,16 +2,13 @@ import { Link, useLocation } from "react-router-dom";
 import { FaMoneyBillWave, FaWallet, FaChartPie, FaUsers } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
-// Sidebar component receives isSidebarOpen prop to control visibility
 const Sidebar = ({ isSidebarOpen }) => {
-  const [hoveredItem, setHoveredItem] = useState(null); // Track which nav item is hovered
-  const [animationPhase, setAnimationPhase] = useState(0); // Used for background animations
-  const location = useLocation(); // Get current path for active link highlighting
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const [animationPhase, setAnimationPhase] = useState(0);
+  const location = useLocation();
 
-  // Function to determine if a nav link is active
   const isActive = (path) => location.pathname === path;
 
-  // Cycle through animation phases every 3 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setAnimationPhase((prev) => (prev + 1) % 4);
@@ -26,17 +23,17 @@ const Sidebar = ({ isSidebarOpen }) => {
         ${isSidebarOpen ? 'w-64' : 'w-0'} 
         md:w-16 md:hover:w-56 lg:w-56`}
     >
-      {/* Static gradient background layer */}
+      {/* Gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-50 z-0"></div>
 
-      {/* Animated glowing orb effect in the background */}
+      {/* Animated orb */}
       <div 
         className={`absolute bottom-20 -left-20 w-64 h-64 rounded-full bg-gradient-to-tr from-teal-100/30 to-transparent backdrop-blur-lg z-0 transition-all duration-3000 ease-in-out ${
           animationPhase % 2 === 1 ? 'scale-100 opacity-30' : 'scale-105 opacity-15'
         }`}
       ></div>
 
-      {/* Decorative animated horizontal lines */}
+      {/* Decorative lines */}
       <div className="absolute inset-0 z-0 opacity-10">
         <div className="absolute top-0 left-0 w-full h-full">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -57,7 +54,7 @@ const Sidebar = ({ isSidebarOpen }) => {
         </div>
       </div>
 
-      {/* Sidebar navigation links */}
+      {/* Navigation */}
       <nav className="relative mt-6 flex flex-col space-y-1 px-2 z-10">
         {[
           { to: "/dashboard", icon: <FaChartPie />, label: "Dashbord" },
@@ -71,18 +68,15 @@ const Sidebar = ({ isSidebarOpen }) => {
             to={to}
             className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-all group relative ${
               isActive(to)
-                ? "bg-white/80 border border-cyan-200 shadow-sm" // Style for active link
-                : "text-gray-700 hover:bg-white/50 hover:border hover:border-cyan-200/30" // Style for inactive link
+                ? "bg-white/80 border border-cyan-200 shadow-sm"
+                : "text-gray-700 hover:bg-white/50 hover:border hover:border-cyan-200/30"
             }`}
             onMouseEnter={() => setHoveredItem(to)}
             onMouseLeave={() => setHoveredItem(null)}
           >
-            {/* Icon */}
             <span className={`${isActive(to) ? "text-cyan-500" : "text-gray-600"}`}>
               {icon}
             </span>
-
-            {/* Label (hidden on smaller screens until hover) */}
             <span className="md:opacity-0 md:group-hover:opacity-100 lg:opacity-100 transition-opacity duration-300">
               {label}
             </span>
@@ -90,12 +84,12 @@ const Sidebar = ({ isSidebarOpen }) => {
         ))}
       </nav>
 
-      {/* Bottom progress bar animation */}
+      {/* Bottom progress bar */}
       <div className="absolute bottom-6 left-0 right-0 flex justify-center z-10">
         <div className="w-24 h-1 rounded-full overflow-hidden bg-gray-200">
           <div
             className="h-full bg-gradient-to-r from-cyan-500 to-teal-400 transition-all duration-1000 ease-in-out"
-            style={{ width: `${25 + animationPhase * 25}%` }} // Progress changes with animationPhase
+            style={{ width: `${25 + animationPhase * 25}%` }}
           ></div>
         </div>
       </div>
